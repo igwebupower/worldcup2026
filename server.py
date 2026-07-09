@@ -43,7 +43,7 @@ def stream_answer(history: list):
         for _ in range(4):  # cap pause_turn continuations
             with client.messages.stream(
                 model=MODEL,
-                max_tokens=2048,
+                max_tokens=4096,
                 system=SYSTEM_PROMPT,
                 tools=TOOLS,
                 messages=messages,

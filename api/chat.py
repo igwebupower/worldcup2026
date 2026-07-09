@@ -28,7 +28,7 @@ SYSTEM_PROMPT = (
     "facts you find. If something has not happened yet, say so plainly rather "
     "than guessing. If a question is not about the 2026 World Cup, briefly say "
     "that's outside your focus and offer to help with the tournament instead. "
-    "Keep answers concise and lead with the direct answer."
+    "Keep answers concise and lead with the direct answer. Do not use emojis."
 )
 
 TOOLS = [{"type": "web_search_20260209", "name": "web_search", "max_uses": 5}]
@@ -72,7 +72,7 @@ def stream_answer(history):
         for _ in range(4):  # cap pause_turn continuations
             with client.messages.stream(
                 model=MODEL,
-                max_tokens=2048,
+                max_tokens=4096,
                 system=SYSTEM_PROMPT,
                 tools=TOOLS,
                 messages=messages,
