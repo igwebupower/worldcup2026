@@ -9,6 +9,14 @@ one dependency.
 
 The app is intentionally left uninstrumented; adding instrumentation is a
 student exercise.
+## Instrument it with Enprompta
+
+Want to see exactly what instrumentation adds? Open the quickstart notebook in
+Colab — it clones this app, wires OpenTelemetry tracing, a versioned prompt, and
+evals around the single LLM call site, then streams the traces to your Enprompta
+project.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Enprompta/worldcup2026/blob/main/notebooks/enprompta_quickstart.ipynb)
 
 ## Setup
 
