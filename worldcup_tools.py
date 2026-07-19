@@ -461,3 +461,31 @@ def run_tool_uses(content) -> list[dict]:
         results.append({"type": "tool_result", "tool_use_id": block.id,
                         "content": payload, "is_error": is_error})
     return results
+
+
+if __name__ == "__main__":
+    # Offline smoke test — no API key needed:  python worldcup_tools.py
+    _checks = [
+        ("get_group_standings", {"group": "A"}),
+        ("get_fixtures", {"team": "Poland"}),
+        ("get_match_result", {"match_id": "A3"}),
+        ("get_team_squad", {"team": "Mexico"}),
+        ("get_player_stats", {"player": "Santiago Gimenez"}),
+        ("get_venue_info", {"venue": "New York"}),
+        ("convert_kickoff_to_timezone",
+         {"kickoff_utc": "2026-06-24T19:00:00Z", "timezone_name": "America/Los_Angeles"}),
+        ("calculate_qualification_scenario", {"group": "A", "team": "Poland"}),
+        ("search_knowledge_base", {"query": "group tie-breakers if level on points"}),
+    ]
+    _ok = 0
+    for _name, _args in _checks:
+        try:
+            _out = run_tool(_name, _args)
+            _bad = isinstance(_out, dict) and _out.get("error")
+            print("FAIL" if _bad else "ok  ", _name, "->", json.dumps(_out, default=str)[:110])
+            _ok += 0 if _bad else 1
+        except Exception as _exc:  # noqa: BLE001
+            print("ERR ", _name, "->", _exc)
+    _teams = [t for teams in GROUPS.values() for t in teams]
+    assert len(_teams) == len(set(_teams)) == 48, "expected 48 unique teams across the groups"
+    print(f"\n{_ok}/{len(_checks)} tools returned data; {len(_teams)} unique teams across {len(GROUPS)} groups.")
